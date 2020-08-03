@@ -1,51 +1,34 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:wled="clr-namespace:WLED"
-             x:Class="WLED.DeviceListViewPage"
+             xmlns:components="clr-namespace:WLED.Components"
              BackgroundColor="#222"
-             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:viewModels="clr-namespace:WLED.ViewModels" 
              ios:Page.UseSafeArea="true"
-             >
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Style x:Key="LabelStyle" TargetType="Label">
-                <Setter Property="TextColor" Value="White" />
-                <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
-                <Setter Property="VerticalOptions" Value="CenterAndExpand" />
-            </Style>
-        </ResourceDictionary>
-    </ContentPage.Resources>
-    
-    <StackLayout BackgroundColor="#222222">
-        <wled:MenuBar x:Name="topMenuBar"/>
-
-        <Label x:Name="welcomeLabel"
-               Text="Welcome!"
-               Font="Bold, 25"
-               Style="{StaticResource LabelStyle}" />
-
-        <Label x:Name="instructionLabel"
-               Font="18"
-               Text="Please use the &quot;+&quot; button to add your WLED lights!"
-               HorizontalTextAlignment="Center"
-               Style="{StaticResource LabelStyle}" />
-
-        <ListView x:Name="DeviceListView"
-                ItemsSource="{Binding DeviceList}"
-                ItemTapped="OnDeviceTapped"
-                IsPullToRefreshEnabled="True"
-                Refreshing="OnRefresh"
-                HasUnevenRows="True"
-                RowHeight="-1"
-                BackgroundColor="#222222"
-                Footer=""
-                CachingStrategy="RecycleElement">
-
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <StackLayout BackgroundColor="#222222" IsVisible="{Binding IsEnabled}" HeightRequest="{Binding ListHeight}">
+             x:Class="WLED.Views.DeviceListPage">
+    <ContentPage.BindingContext>
+        <viewModels:DeviceViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <StackLayout Spacing="0">
+            <StackLayout Orientation="Horizontal" Padding="0" Margin="0">
+                <Label Text="Device List" FontSize="30" FontFamily="{StaticResource BebasNeue}"
+                       HorizontalOptions="Center" TextColor="White" Margin="25" Padding="0"/>
+                <Button Text="plus" TextColor="#4af2a1" FontFamily="{StaticResource FontAwesomeSolid}"
+                        Clicked="OnAddButtonTapped" FontSize="30" HorizontalOptions="EndAndExpand" Margin="0,0,15,0" Padding="0"/>
+            </StackLayout>
+            <BoxView Color="LightGray" Margin="15,0,15,0" HorizontalOptions="FillAndExpand" HeightRequest="1"></BoxView>
+            <ListView x:Name="DeviceListView"
+                    ItemsSource="{Binding DeviceList}"
+                    IsPullToRefreshEnabled="True"
+                    HasUnevenRows="True"
+                    BackgroundColor="#222222"
+                    CachingStrategy="RecycleElement">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                           <StackLayout BackgroundColor="#222222" IsVisible="{Binding IsEnabled}" HeightRequest="{Binding ListHeight}">
                             <Grid BackgroundColor="#222222" Padding="6" Margin="6,2" >
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="35" />
@@ -72,9 +55,10 @@
                                         Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" />
                             </Grid>
                         </StackLayout>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
 </ContentPage>

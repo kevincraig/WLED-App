@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Tmds.MDns;
+using WLED.Models;
 
 namespace WLED
 {

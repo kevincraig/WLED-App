@@ -2,10 +2,12 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using WLED.Models;
 
 namespace WLED
 {
@@ -52,9 +54,9 @@ namespace WLED
 
         private async void OnAddButtonTapped(object sender, EventArgs e)
         {
-            var page = new DeviceAddPage(this);
-            page.DeviceCreated += OnDeviceCreated;
-            await Navigation.PushModalAsync(page, false);
+            //var page = new DeviceAddPage();
+            //page.DeviceCreated += OnDeviceCreated;
+            //await Navigation.PushModalAsync(page, false);
         }
 
         private async void OnDeletionModeButtonTapped(object sender, EventArgs e)
@@ -115,7 +117,7 @@ namespace WLED
             if (deviceList.Remove(d)) InsertDeviceSorted(d);
         }
 
-        private void OnPowerButtonTapped(object sender, ItemTappedEventArgs e)
+        private void OnPowerButtonTapped(object sender, EventArgs e)
         {
             Button s = sender as Button;
             if (s.Parent.BindingContext is WLEDDevice targetDevice)
@@ -172,5 +174,8 @@ namespace WLED
         {
             foreach (WLEDDevice d in deviceList) _ = d.Refresh();
         }
+
+       
+
     }
 }

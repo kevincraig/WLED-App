@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using WLED.Models;
 
 namespace WLED
 {
@@ -23,7 +24,7 @@ namespace WLED
             DeviceModificationListView.ItemsSource = DeviceList;
         }
 
-        private void OnDeleteButtonTapped(object sender, ItemTappedEventArgs e)
+        private void OnDeleteButtonTapped(object sender, EventArgs e)
         {
             Button s = sender as Button;
             if (!(s.Parent.BindingContext is WLEDDevice targetDevice)) return;

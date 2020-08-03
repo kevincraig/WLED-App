@@ -3,7 +3,9 @@ using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Xamarin.Forms;
+using WLED.Models;
 
 namespace WLED.ViewModels
 {
@@ -85,12 +87,10 @@ namespace WLED.ViewModels
 
         public ViewModelBase()
         {
-//            MenuPage.App_Logout += AppLogout;
+
         }
 
-        protected virtual void AppLogout(object sender, EventArgs e)
-        {
-           
-        }
+        
+       
     }
 }

@@ -3,6 +3,10 @@ using Xamarin.Essentials;
 using Xamarin.Forms.Xaml;
 using System.Collections.ObjectModel;
 using System.Linq;
+using WLED.Views;
+using WLED.ViewModels;
+using Xamarin.Forms.Internals;
+using System.Diagnostics;
 
 /*
  * WLED App v1.0.2
@@ -17,67 +21,80 @@ namespace WLED
 {
     public partial class App : Application
     {
-        private DeviceListViewPage listview;
+        
+        //ViewModel Instances
+        public static DeviceViewModel DeviceViewModel { get; private set; }
 
         private bool connectedToLocalLast = false;
 
         public App()
         {
+
+            Xamarin.Forms.Internals.Log.Listeners.Add(new DelegateLogListener((arg1, arg2) => Debug.WriteLine(arg2)));
             InitializeComponent();
 
-            listview = new DeviceListViewPage();
-            MainPage = listview;
+            //listview = new DeviceListViewPage();
+            //MainPage = listview;
             //MainPage.SetValue(NavigationPage.BarTextColorProperty, Color.White);
+
+            MainPage = new AppShell();
             Application.Current.MainPage.SetValue(NavigationPage.BarBackgroundColorProperty, "#0000AA");
 
             Connectivity.ConnectivityChanged += OnConnectivityChanged;
+
+            //Public ViewModel Instance
+            DeviceViewModel = new DeviceViewModel();
         }
 
         protected override void OnStart()
         {
+            //Todo Rework OnStart()
             //Directly open the device web page if connected to WLED Access Point
-            if (NetUtility.IsConnectedToWledAP()) listview.OpenAPDeviceControlPage();
+            //if (NetUtility.IsConnectedToWledAP()) listview.OpenAPDeviceControlPage();
 
-            // Load device list from Preferences
-            if (Preferences.ContainsKey("wleddevices"))
-            {
-                string devices = Preferences.Get("wleddevices", "");
-                if (!devices.Equals(""))
-                {
-                    ObservableCollection<WLEDDevice> fromPreferences = Serialization.Deserialize(devices);
-                    if (fromPreferences != null) listview.DeviceList = fromPreferences;
-                }
-            }
+            //// Load device list from Preferences
+            //if (Preferences.ContainsKey("wleddevices"))
+            //{
+            //    string devices = Preferences.Get("wleddevices", "");
+            //    if (!devices.Equals(""))
+            //    {
+            //        ObservableCollection<WLEDDevice> fromPreferences = Serialization.Deserialize(devices);
+            //        if (fromPreferences != null) listview.DeviceList = fromPreferences;
+            //    }
+            //}
         }
 
         protected override void OnSleep()
         {
+            //Todo Rework OnSleep()
             //Handle when app sleeps, save device list to Preferences
-            string devices = Serialization.SerializeObject(listview.DeviceList);
-            Preferences.Set("wleddevices", devices);
+            //string devices = Serialization.SerializeObject(listview.DeviceList);
+            //Preferences.Set("wleddevices", devices);
         }
 
         protected override void OnResume()
         {
+            //Todo Rework OnResume()
             //Handle when app resumes, directly open the device web page if connected to WLED Access Point
-            if (NetUtility.IsConnectedToWledAP()) listview.OpenAPDeviceControlPage();
+            //if (NetUtility.IsConnectedToWledAP()) listview.OpenAPDeviceControlPage();
 
-            //Refresh light states
-            listview.RefreshAll();
+            ////Refresh light states
+            //listview.RefreshAll();
         }
 
         private void OnConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
         {
+            //Todo Rework OnConnectivityChanged()
             //Detect if currently connected to local (WiFi) or mobile network
-            var profiles = Connectivity.ConnectionProfiles;
-            bool connectedToLocal = (profiles.Contains(ConnectionProfile.WiFi) || profiles.Contains(ConnectionProfile.Ethernet));
+            //var profiles = Connectivity.ConnectionProfiles;
+            //bool connectedToLocal = (profiles.Contains(ConnectionProfile.WiFi) || profiles.Contains(ConnectionProfile.Ethernet));
 
-            //Directly open the device web page if connected to WLED Access Point
-            if (connectedToLocal && NetUtility.IsConnectedToWledAP()) listview.OpenAPDeviceControlPage();
+            ////Directly open the device web page if connected to WLED Access Point
+            //if (connectedToLocal && NetUtility.IsConnectedToWledAP()) listview.OpenAPDeviceControlPage();
 
-            //Refresh all devices on connection change
-            if (connectedToLocal && !connectedToLocalLast) listview.RefreshAll();
-            connectedToLocalLast = connectedToLocal;
+            ////Refresh all devices on connection change
+            //if (connectedToLocal && !connectedToLocalLast) listview.RefreshAll();
+            //connectedToLocalLast = connectedToLocal;
         }
     }
 }

@@ -19,7 +19,6 @@
                 ItemTapped="OnDeviceTapped"
                 HasUnevenRows="True"
                 BackgroundColor="#222222"
-                ios:ListView.SeparatorStyle="FullWidth"
                 Footer=""
                 CachingStrategy="RecycleElement">
 

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Xamarin.Forms;
 
-namespace WLED
+namespace WLED.Models
 {
     enum DeviceStatus { Default, Unreachable, Error };
 

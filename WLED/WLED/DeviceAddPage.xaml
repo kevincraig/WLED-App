@@ -1,18 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:wled="clr-namespace:WLED"
              x:Class="WLED.DeviceAddPage"
              BackgroundColor="#222"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
-             ios:Page.UseSafeArea="true"
-             >
+             ios:Page.UseSafeArea="true" >
 
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="LabelStyle" TargetType="Label">
                 <Setter Property="TextColor" Value="White" />
                 <Setter Property="Font" Value="18" />
+                <Setter Property="FontFamily" Value="{StaticResource Coolvetica}"/>
                 <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
             </Style>
             <Style x:Key="EntryStyle" TargetType="Entry">
@@ -28,14 +27,14 @@
     
     <ContentPage.Content>
         <StackLayout>
-            <wled:MenuBar x:Name="topMenuBar"/>
+            <!--<wled:MenuBar x:Name="topMenuBar"/>-->
 
             <Button Text="Discover lights..." BackgroundColor="#333" TextColor="White" Margin="10" Clicked="OnDiscoveryButtonClicked"/>
             <Label x:Name="discoveryResultLabel" Text="" Style="{StaticResource LabelStyle}" IsVisible="False" />
             <BoxView HeightRequest="1" HorizontalOptions="Fill" Margin="8,0" BackgroundColor="#888"/>
             
-            <Label Text="Add a light manually:" Style="{StaticResource LabelStyle}" />
-            <Label Text="IP address or URL" Style="{StaticResource LabelStyle}" />
+            <Label Text="Add a light manually:" Style="{StaticResource LabelStyle}"/>
+            <Label Text="IP address or URL" Style="{StaticResource LabelStyle}"/>
             <Entry x:Name="networkAddressEntry"
                    Keyboard="Url"
                    Placeholder="192.168.4.1"
@@ -48,6 +47,15 @@
                    Placeholder="(get from device)"
                    Completed="OnEntryCompleted"
                    Style="{StaticResource EntryStyle}" />
+
+            <Button Text="Save"
+                    Clicked="OnEntryCompleted"
+                    FontFamily="{StaticResource BebasNeue}"
+                    FontSize="30"
+                    BackgroundColor="CadetBlue"
+                    HeightRequest="40"
+                    TextColor="White"
+                    Margin="15,0,15,0"/>  
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

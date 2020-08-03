@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace WLED
 {
-    public partial class AppShell : ContentPage
+    public partial class AppShell : Shell
     {
         public AppShell()
         {
             InitializeComponent();
+            Routes.RegisterRoutes();
         }
     }
 }

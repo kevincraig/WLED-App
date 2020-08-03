@@ -1,6 +1,9 @@
 ﻿using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using WLED.Models;
+using WLED.ViewModels;
+using WLED.Views;
 
 namespace WLED
 {
@@ -8,18 +11,20 @@ namespace WLED
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class DeviceAddPage : ContentPage
 	{
-        public event EventHandler<DeviceCreatedEventArgs> DeviceCreated;
+        public static event EventHandler<DeviceCreatedEventArgs> DeviceCreated;
         private bool discoveryMode = false;
         private int devicesFoundCount = 0;
+        private DeviceViewModel viewModel;
 
-		public DeviceAddPage(DeviceListViewPage list)
+		public DeviceAddPage()
 		{
 			InitializeComponent ();
 
-            topMenuBar.SetButtonIcon(ButtonLocation.Right, ButtonIcon.Done);
-            topMenuBar.RightButtonTapped += OnEntryCompleted;
+            //topMenuBar.SetButtonIcon(ButtonLocation.Right, ButtonIcon.Done);
+            //topMenuBar.RightButtonTapped += OnEntryCompleted;
 
             networkAddressEntry.Focus();
+            viewModel = App.DeviceViewModel;
         }
 
         //If done, create device and close page
@@ -44,7 +49,8 @@ namespace WLED
             device.Name = name;
             device.NetworkAddress = address;
 
-            await Navigation.PopModalAsync(false);
+
+            await Shell.Current.GoToAsync("..");
 
             //Add device, but not if the user clicked checkmark after doing auto-discovery only
             if (devicesFoundCount == 0 || !address.Equals("192.168.4.1")) OnDeviceCreated(new DeviceCreatedEventArgs(device));

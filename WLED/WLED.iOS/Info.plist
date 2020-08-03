@@ -19,7 +19,7 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>MinimumOSVersion</key>
-	<string>11.0</string>
+	<string>13.6</string>
 	<key>CFBundleDisplayName</key>
 	<string>WLED</string>
 	<key>CFBundleIdentifier</key>
@@ -43,5 +43,12 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>FontAwesome5BrandsRegular.otf</string>
+		<string>FontAwesome5Regular.otf</string>
+		<string>FontAwesome5Solid.otf</string>
+		<string>BebasNeue.otf</string>
+	</array>
 </dict>
 </plist>
