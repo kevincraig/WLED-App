@@ -45,6 +45,20 @@ namespace WLED.Views
         void OnPowerButtonTapped(System.Object sender, EventArgs e)
         {
             Console.WriteLine("Power Button Tapped");
+            Button s = sender as Button;
+            WLEDDevice d = new WLEDDevice();
+            if (s.Parent.BindingContext is WLEDDevice targetDevice)
+            {
+                d = targetDevice;
+                viewModel.TogglePower?.Execute(targetDevice);
+
+            }
+            else
+            {
+                DisplayAlert($"{d.Name}", "We were unable to toggle power, please try again later.", "OK");
+            }
+
+            
         }
     }
 }

@@ -31,7 +31,10 @@ namespace WLED.ViewModels
         public ICommand CacheDevices => new Command((obj) => OnCacheDevices());
         public ICommand GetCachedDevices => new Command((obj) => OnGetCachedDevices());
         public ICommand ResortDevices => new Command((obj) => OnResortDevices());
-           
+        public ICommand TogglePower => new Command((obj) => OnTogglePower(obj));
+
+       
+
         private void OnCreateDevice()
         {
             
@@ -83,6 +86,12 @@ namespace WLED.ViewModels
             {
                 DeviceList.OrderBy(x => x.Name);
             }
+        }
+
+        private async void OnTogglePower(object d)
+        {
+            WLEDDevice device = d as WLEDDevice;            
+            await device.SendAPICall("T=2");
         }
 
         public void RefreshAll()

@@ -51,6 +51,7 @@
                                         Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" />-->
                                 <!--<Image Source="icon_power.png" Scale ="0.8" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" InputTransparent="True" BackgroundColor="Transparent"/>-->
                                 <Button Text="&#xf011;" Grid.Row="0" Grid.Column="1"
+                                        Clicked="OnPowerButtonTapped"
                                         Grid.RowSpan="2" TextColor="White"
                                         FontFamily="{StaticResource FontAwesomeSolid}"
                                         FontSize="30"/>
