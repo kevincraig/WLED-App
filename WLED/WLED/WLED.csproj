@@ -17,30 +17,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="DeviceListViewPage.xaml.cs">
-      <DependentUpon>DeviceListViewPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="DeviceControlPage.xaml.cs">
-      <DependentUpon>DeviceControlPage.xaml</DependentUpon>
-    </Compile>
+    <Compile Remove="Deprecated\MenuBar.xaml.cs" />
+    <Compile Remove="Deprecated\DeviceListViewPage.xaml.cs" />
+    <Compile Remove="Deprecated\DeviceListViewPage.xaml.cs" />
+    <Compile Remove="Deprecated\MenuBar.xaml.cs" />
+    <Compile Remove="ViewModels\DeviceAddPage.xaml.cs" />
   </ItemGroup>
-
   <ItemGroup>
-    <EmbeddedResource Update="DeviceAddPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="DeviceListViewPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="DeviceControlPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="DeviceModificationListViewPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="MenuBar.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
+    <EmbeddedResource Remove="Deprecated\DeviceListViewPage.xaml" />
+    <EmbeddedResource Remove="Deprecated\MenuBar.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.iOS">
@@ -54,5 +39,6 @@
     <Folder Include="ViewModels\" />
     <Folder Include="Services\" />
     <Folder Include="Utils\" />
+    <Folder Include="Deprecated\" />
   </ItemGroup>
 </Project>

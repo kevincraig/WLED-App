@@ -25,7 +25,7 @@ namespace WLED
             {
                 deviceList = value;
                 DeviceListView.ItemsSource = deviceList;
-                RefreshAll();
+                //RefreshAll();
                 UpdateElementsVisibility();
             }
             get { return deviceList; }
@@ -38,13 +38,7 @@ namespace WLED
 
             DeviceList = new ObservableCollection<WLEDDevice>();
 
-            topMenuBar.SetButtonIcon(ButtonLocation.Left, ButtonIcon.Delete);
-            topMenuBar.SetButtonIcon(ButtonLocation.Right, ButtonIcon.Add);
-            topMenuBar.LeftButtonTapped += OnDeletionModeButtonTapped;
-            topMenuBar.RightButtonTapped += OnAddButtonTapped;
         }
-
-
 
         private void OnRefresh(object sender, EventArgs e)
         {
@@ -103,19 +97,7 @@ namespace WLED
                 ReinsertDeviceSorted(sender as WLEDDevice);
             }
         }
-
-        private void InsertDeviceSorted(WLEDDevice d)
-        {
-            int index = 0;
-            while (index < deviceList.Count && d.CompareTo(deviceList.ElementAt(index)) > 0) index++;
-            deviceList.Insert(index, d);
-        }
-
-        private void ReinsertDeviceSorted(WLEDDevice d)
-        {
-            if (d == null) return;
-            if (deviceList.Remove(d)) InsertDeviceSorted(d);
-        }
+             
 
         private void OnPowerButtonTapped(object sender, EventArgs e)
         {
@@ -158,8 +140,7 @@ namespace WLED
 
             welcomeLabel.IsVisible = listIsEmpty;
             instructionLabel.IsVisible = listIsEmpty;
-            topMenuBar.SetButtonIcon(ButtonLocation.Left, listIsEmpty ? ButtonIcon.None : ButtonIcon.Delete);
-
+            
             //iOS workaround for listview not updating unless ItemSource is modified
             if (Device.RuntimePlatform == Device.iOS)
             {
@@ -170,10 +151,10 @@ namespace WLED
 
         }
 
-        internal void RefreshAll()
-        {
-            foreach (WLEDDevice d in deviceList) _ = d.Refresh();
-        }
+        //internal void RefreshAll()
+        //{
+        //    foreach (WLEDDevice d in deviceList) _ = d.Refresh();
+        //}
 
        
 

@@ -7,6 +7,7 @@ using WLED.Views;
 using WLED.ViewModels;
 using Xamarin.Forms.Internals;
 using System.Diagnostics;
+using WLED.Models;
 
 /*
  * WLED App v1.0.2
@@ -29,7 +30,8 @@ namespace WLED
 
         public App()
         {
-
+            //Public ViewModel Instance
+            DeviceViewModel = new DeviceViewModel();
             Xamarin.Forms.Internals.Log.Listeners.Add(new DelegateLogListener((arg1, arg2) => Debug.WriteLine(arg2)));
             InitializeComponent();
 
@@ -42,8 +44,7 @@ namespace WLED
 
             Connectivity.ConnectivityChanged += OnConnectivityChanged;
 
-            //Public ViewModel Instance
-            DeviceViewModel = new DeviceViewModel();
+          
         }
 
         protected override void OnStart()
@@ -52,24 +53,17 @@ namespace WLED
             //Directly open the device web page if connected to WLED Access Point
             //if (NetUtility.IsConnectedToWledAP()) listview.OpenAPDeviceControlPage();
 
-            //// Load device list from Preferences
-            //if (Preferences.ContainsKey("wleddevices"))
-            //{
-            //    string devices = Preferences.Get("wleddevices", "");
-            //    if (!devices.Equals(""))
-            //    {
-            //        ObservableCollection<WLEDDevice> fromPreferences = Serialization.Deserialize(devices);
-            //        if (fromPreferences != null) listview.DeviceList = fromPreferences;
-            //    }
-            //}
+            if (Preferences.ContainsKey("wleddevices"))
+            {
+                App.DeviceViewModel.GetCachedDevices?.Execute(null);
+            }
         }
 
         protected override void OnSleep()
         {
             //Todo Rework OnSleep()
             //Handle when app sleeps, save device list to Preferences
-            //string devices = Serialization.SerializeObject(listview.DeviceList);
-            //Preferences.Set("wleddevices", devices);
+            App.DeviceViewModel.CacheDevices?.Execute(null);
         }
 
         protected override void OnResume()
@@ -80,6 +74,7 @@ namespace WLED
 
             ////Refresh light states
             //listview.RefreshAll();
+            App.DeviceViewModel.RefreshAll();
         }
 
         private void OnConnectivityChanged(object sender, ConnectivityChangedEventArgs e)

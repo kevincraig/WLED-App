@@ -27,7 +27,7 @@
     
     <ContentPage.Content>
         <StackLayout>
-            <!--<wled:MenuBar x:Name="topMenuBar"/>-->
+            
 
             <Button Text="Discover lights..." BackgroundColor="#333" TextColor="White" Margin="10" Clicked="OnDiscoveryButtonClicked"/>
             <Label x:Name="discoveryResultLabel" Text="" Style="{StaticResource LabelStyle}" IsVisible="False" />
@@ -38,18 +38,16 @@
             <Entry x:Name="networkAddressEntry"
                    Keyboard="Url"
                    Placeholder="192.168.4.1"
-                   Completed="OnEntryCompleted"
                    Style="{StaticResource EntryStyle}" />
 
             <Label Text="Custom Name" Style="{StaticResource LabelStyle}" />
             <Entry x:Name="nameEntry"
                    Keyboard="Plain"
                    Placeholder="(get from device)"
-                   Completed="OnEntryCompleted"
                    Style="{StaticResource EntryStyle}" />
 
             <Button Text="Save"
-                    Clicked="OnEntryCompleted"
+                    Clicked="OnSaveDevice"
                     FontFamily="{StaticResource BebasNeue}"
                     FontSize="30"
                     BackgroundColor="CadetBlue"

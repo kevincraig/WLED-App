@@ -22,7 +22,7 @@ namespace WLED
             if (currentDevice == null) loadingLabel.Text = "Loading... (WLED-AP)"; //If the device is null, we are connected to the WLED light's access point
             UIBrowser.Source = pageURL;
             UIBrowser.Navigated += OnNavigationCompleted;
-            topMenuBar.LeftButtonTapped += OnBackButtonTapped;
+            
         }
 
         private void OnNavigationCompleted(object sender, WebNavigatedEventArgs e)

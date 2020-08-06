@@ -9,7 +9,7 @@
              >
 
     <StackLayout>
-        <wled:MenuBar x:Name="topMenuBar"/>
+        
         <Label Text="Click on devices to hide them!" 
                HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"
                TextColor="White" Font="18"/>

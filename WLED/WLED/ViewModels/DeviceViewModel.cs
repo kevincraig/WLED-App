@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Linq;
 using WLED.Models;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace WLED.ViewModels
@@ -17,58 +20,79 @@ namespace WLED.ViewModels
             set => SetPropertyValue(ref _deviceList, value);
         }
 
-        public ICommand CreateDevice => new Command((obj) => OnCreateDevice(obj));
-
-        private void OnCreateDevice(object obj)
+        private WLEDDevice _deviceToCreate;
+        public WLEDDevice DeviceToCreate
         {
-            WLEDDevice toAdd = (WLEDDevice)obj;
+            get => _deviceToCreate;
+            set => SetPropertyValue(ref _deviceToCreate, value);
+        }
 
-            if (toAdd != null)
+        public ICommand CreateDevice => new Command((obj) => OnCreateDevice());
+        public ICommand CacheDevices => new Command((obj) => OnCacheDevices());
+        public ICommand GetCachedDevices => new Command((obj) => OnGetCachedDevices());
+        public ICommand ResortDevices => new Command((obj) => OnResortDevices());
+           
+        private void OnCreateDevice()
+        {
+            
+            if (DeviceToCreate != null)
             {
                 foreach (WLEDDevice d in DeviceList)
                 {
                     //ensure there is only one device entry per IP
-                    if (toAdd.NetworkAddress.Equals(d.NetworkAddress))
+                    if (DeviceToCreate.NetworkAddress.Equals(d.NetworkAddress))
                     {
-                        if (toAdd.NameIsCustom)
+                        if (DeviceToCreate.NameIsCustom)
                         {
-                            d.Name = toAdd.Name;
+                            d.Name = DeviceToCreate.Name;
                             d.NameIsCustom = true;
-                            ReinsertDeviceSorted(d);
+                            var index = DeviceList.IndexOf(d);
+                            DeviceList.RemoveAt(index);
+                            DeviceList.Insert(index, d);
                         }
                         return;
                     }
                 }
-                InsertDeviceSorted(toAdd);
+                DeviceList.Add(DeviceToCreate);
+                DeviceList.OrderBy(x => x.Name);
+            }
+            OnCacheDevices();
+        }
+
+        private void OnCacheDevices()
+        {
+            string devices = Serialization.SerializeObject(DeviceList);
+            Preferences.Set("wleddevices", devices);
+        }
+
+        private void OnGetCachedDevices()
+        {
+            string devices = Preferences.Get("wleddevices", "");
+            if (!devices.Equals(""))
+            {
+                ObservableCollection<WLEDDevice> fromPreferences = Serialization.Deserialize(devices);
+                if (fromPreferences != null) DeviceList = new ObservableCollection<WLEDDevice>(fromPreferences);
+                Console.WriteLine($"Device Count: {DeviceList.Count}");
+            }
+            RefreshAll();
+        }
+
+        private void OnResortDevices()
+        {
+            if (DeviceList.Count > 0)
+            {
+                DeviceList.OrderBy(x => x.Name);
             }
         }
 
-        
-        private void ReinsertDeviceSorted(WLEDDevice device)
+        public void RefreshAll()
         {
-            
-            try
-            {
-                
-                if (DeviceList.Remove(device)) InsertDeviceSorted(device);
-            }
-            catch (Exception ex)
-            {
-                Console.Write(ex.Message);
-            }
-            
-        }
-
-        private void InsertDeviceSorted(WLEDDevice d)
-        {
-            int index = 0;
-            while (index < DeviceList.Count && d.CompareTo(DeviceList[index]) > 0) index++;
-
-            DeviceList.Add(d);
+            foreach (WLEDDevice d in DeviceList) _ = d.Refresh();
         }
 
         public DeviceViewModel()
         {
+            //Initialize Device List
             DeviceList = new ObservableCollection<WLEDDevice>();
         }
 

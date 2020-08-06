@@ -1,0 +1,6 @@
+rm -rf WLED/bin
+rm -rf WLED/obj
+rm -rf WLED.iOS/bin
+rm -rf WLED.iOS/obj
+rm -rf WLED.Android/bin
+rm -rf WLED.Android/obj

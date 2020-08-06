@@ -11,7 +11,6 @@ namespace WLED
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class DeviceAddPage : ContentPage
 	{
-        public static event EventHandler<DeviceCreatedEventArgs> DeviceCreated;
         private bool discoveryMode = false;
         private int devicesFoundCount = 0;
         private DeviceViewModel viewModel;
@@ -19,20 +18,18 @@ namespace WLED
 		public DeviceAddPage()
 		{
 			InitializeComponent ();
-
-            //topMenuBar.SetButtonIcon(ButtonLocation.Right, ButtonIcon.Done);
-            //topMenuBar.RightButtonTapped += OnEntryCompleted;
-
+                    
             networkAddressEntry.Focus();
             viewModel = App.DeviceViewModel;
         }
+               
 
         //If done, create device and close page
-        private async void OnEntryCompleted(object sender, EventArgs e)
+        private async void OnSaveDevice(object sender, EventArgs e)
         {
             if (sender is Entry currentEntry) currentEntry.Unfocus();
-
-            var device = new WLEDDevice();
+            viewModel.DeviceToCreate = new WLEDDevice();
+            //var device = new WLEDDevice();
 
             string address = networkAddressEntry.Text;
             string name = nameEntry.Text;
@@ -42,18 +39,18 @@ namespace WLED
             if (address.EndsWith("/")) address = address.Substring(0, address.Length -1);
             if (name == null || name.Length == 0)
             {
-                name = "(New Light)";
-                device.NameIsCustom = false;
+                viewModel.DeviceToCreate.Name = "(New Light)";
+                viewModel.DeviceToCreate.NameIsCustom = false;
             }
 
-            device.Name = name;
-            device.NetworkAddress = address;
+            viewModel.DeviceToCreate.Name = name;
+            viewModel.DeviceToCreate.NetworkAddress = address;
 
-
+            viewModel.CreateDevice?.Execute(null);
             await Shell.Current.GoToAsync("..");
 
             //Add device, but not if the user clicked checkmark after doing auto-discovery only
-            if (devicesFoundCount == 0 || !address.Equals("192.168.4.1")) OnDeviceCreated(new DeviceCreatedEventArgs(device));
+            //if (devicesFoundCount == 0 || !address.Equals("192.168.4.1"))
         }
 
         private void OnDiscoveryButtonClicked(object sender, EventArgs e)
@@ -67,38 +64,39 @@ namespace WLED
                 //Start mDNS discovery
                 b.Text = "Stop discovery";
                 devicesFoundCount = 0;
-                discovery.ValidDeviceFound += OnDeviceCreated;
+                //discovery.ValidDeviceFound += OnDeviceCreated;
                 discoveryResultLabel.IsVisible = true;
                 discoveryResultLabel.Text = "Found no lights yet...";
                 discovery.StartDiscovery();
-            } else
+            }
+            else
             {
                 //Stop mDNS discovery
                 discovery.StopDiscovery();
-                discovery.ValidDeviceFound -= OnDeviceCreated;
+                //discovery.ValidDeviceFound -= OnDeviceCreated;
                 b.Text = "Discover lights...";
             }      
         }
 
-        protected virtual void OnDeviceCreated(DeviceCreatedEventArgs e)
-        {
-            DeviceCreated?.Invoke(this, e);
-        }
+        //protected virtual void OnDeviceCreated(DeviceCreatedEventArgs e)
+        //{
+        //    DeviceCreated?.Invoke(this, e);
+        //}
 
-        private void OnDeviceCreated(object sender, DeviceCreatedEventArgs e)
-        {
-            //this method only gets called by mDNS search, display found devices
-            devicesFoundCount++;
-            if (devicesFoundCount == 1)
-            {
-                discoveryResultLabel.Text = "Found " + e.CreatedDevice.Name + "!";
-            } else
-            {
-                discoveryResultLabel.Text = "Found " + e.CreatedDevice.Name + " and " + (devicesFoundCount - 1) + " other lights!";
-            }
+        //private void OnDeviceCreated(object sender, DeviceCreatedEventArgs e)
+        //{
+        //    //this method only gets called by mDNS search, display found devices
+        //    devicesFoundCount++;
+        //    if (devicesFoundCount == 1)
+        //    {
+        //        discoveryResultLabel.Text = "Found " + e.CreatedDevice.Name + "!";
+        //    } else
+        //    {
+        //        discoveryResultLabel.Text = "Found " + e.CreatedDevice.Name + " and " + (devicesFoundCount - 1) + " other lights!";
+        //    }
 
-            OnDeviceCreated(e);
-        }
+        //    OnDeviceCreated(e);
+        //}
 
         protected override void OnDisappearing()
         {
@@ -107,7 +105,7 @@ namespace WLED
             {
                 var discovery = DeviceDiscovery.GetInstance();
                 discovery.StopDiscovery();
-                discovery.ValidDeviceFound -= OnDeviceCreated;
+                //discovery.ValidDeviceFound -= OnDeviceCreated;
             }
         }
     }

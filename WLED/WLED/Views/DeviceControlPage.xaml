@@ -10,7 +10,7 @@
 
     <ContentPage.Content>
         <StackLayout>
-            <wled:MenuBar x:Name="topMenuBar"/>
+            
 
             <Label x:Name="loadingLabel" Text="Loading..." Font="18" TextColor="white" HorizontalOptions="CenterAndExpand" />
 

@@ -4,7 +4,8 @@
              xmlns:components="clr-namespace:WLED.Components"
              BackgroundColor="#222"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
-             xmlns:viewModels="clr-namespace:WLED.ViewModels" 
+             xmlns:viewModels="clr-namespace:WLED.ViewModels"
+             xmlns:local="clr-namespace:WLED"
              ios:Page.UseSafeArea="true"
              x:Class="WLED.Views.DeviceListPage">
     <ContentPage.BindingContext>
@@ -45,12 +46,15 @@
                                 <Label Text="{Binding Status}" 
                                        Font="18" TextColor="white"
                                        Grid.Row="1" Grid.Column="0" />
-                                <Button Clicked="OnPowerButtonTapped" 
+                                <!--<Button Clicked="OnPowerButtonTapped" 
                                         BorderRadius="32" BackgroundColor="{Binding StateColor}" BorderColor="White" BorderWidth="4"
-                                        Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" />
-                                <Image Source="icon_power.png" Scale ="0.8" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" InputTransparent="True" BackgroundColor="Transparent"/>
-
-                                <Slider Maximum="255.1" Minimum="0.9" Value="{Binding BrightnessCurrent, Mode=TwoWay}"
+                                        Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" />-->
+                                <!--<Image Source="icon_power.png" Scale ="0.8" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" InputTransparent="True" BackgroundColor="Transparent"/>-->
+                                <Button Text="&#xf011;" Grid.Row="0" Grid.Column="1"
+                                        Grid.RowSpan="2" TextColor="White"
+                                        FontFamily="{StaticResource FontAwesomeSolid}"
+                                        FontSize="30"/>
+                                <Slider Maximum="255.1" Minimum="0.9" Value="{Binding BrightnessCurrent, Mode=TwoWay}" 
                                         MinimumTrackColor="{Binding ColorCurrent}" MaximumTrackColor="#333" ThumbColor="White" 
                                         Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" />
                             </Grid>
