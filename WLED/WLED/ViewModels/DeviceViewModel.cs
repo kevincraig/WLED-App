@@ -29,6 +29,7 @@ namespace WLED.ViewModels
 
         public ICommand CreateDevice => new Command((obj) => OnCreateDevice());
         public ICommand CacheDevices => new Command((obj) => OnCacheDevices());
+        public ICommand DeleteDevice => new Command((obj) => OnDeleteDevice(obj));
         public ICommand GetCachedDevices => new Command((obj) => OnGetCachedDevices());
         public ICommand ResortDevices => new Command((obj) => OnResortDevices());
         public ICommand TogglePower => new Command((obj) => OnTogglePower(obj));
@@ -92,6 +93,13 @@ namespace WLED.ViewModels
         {
             WLEDDevice device = d as WLEDDevice;            
             await device.SendAPICall("T=2");
+        }
+
+
+        private async void OnDeleteDevice(object d)
+        {
+
+            DeviceList.Remove(d as WLEDDevice);
         }
 
         public void RefreshAll()

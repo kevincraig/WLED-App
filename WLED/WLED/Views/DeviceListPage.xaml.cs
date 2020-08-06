@@ -36,11 +36,25 @@ namespace WLED.Views
             await Navigation.PushModalAsync(page, false);
         }
 
-        async void OnAddButtonTapped(Object sender, EventArgs e)
+        async void OnAddButtonTapped(object sender, EventArgs e)
         {
             await Shell.Current.GoToAsync("addDevice");
         }
 
+        async void OnDeleteButtonTapped(object sender, EventArgs e)
+        {
+            Button b = sender as Button;
+            WLEDDevice d = new WLEDDevice();
+            if (b.Parent.BindingContext is WLEDDevice targetDevice)
+            {
+                d = targetDevice;
+                bool result = await DisplayAlert("Delete Device", $"Are you sure you want to delete {d.Name}", "Yes", "No");
+                Console.WriteLine($"Deleting {d.Name}");
+                if (result) {
+                    viewModel.DeleteDevice?.Execute(d);
+                }
+            }
+        }
        
         void OnPowerButtonTapped(System.Object sender, EventArgs e)
         {
