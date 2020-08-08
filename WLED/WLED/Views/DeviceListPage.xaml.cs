@@ -20,6 +20,7 @@ namespace WLED.Views
             base.OnAppearing();
             BindingContext = App.DeviceViewModel;
             viewModel = App.DeviceViewModel;
+            //viewModel.PollDevices?.Execute(null);
         }
 
         private async void Handle_DeviceTapped(object sender, ItemTappedEventArgs e)
@@ -49,7 +50,7 @@ namespace WLED.Views
             {
                 d = targetDevice;
                 bool result = await DisplayAlert("Delete Device", $"Are you sure you want to delete {d.Name}", "Yes", "No");
-                Console.WriteLine($"Deleting {d.Name}");
+                Utils.Log($"Deleting {d.Name}");
                 if (result) {
                     viewModel.DeleteDevice?.Execute(d);
                 }
@@ -58,7 +59,7 @@ namespace WLED.Views
        
         void OnPowerButtonTapped(System.Object sender, EventArgs e)
         {
-            Console.WriteLine("Power Button Tapped");
+            Utils.Log("Power Button Tapped");
             Button s = sender as Button;
             WLEDDevice d = new WLEDDevice();
             if (s.Parent.BindingContext is WLEDDevice targetDevice)

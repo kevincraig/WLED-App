@@ -6,7 +6,8 @@
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
              xmlns:viewModels="clr-namespace:WLED.ViewModels"
              xmlns:local="clr-namespace:WLED"
-             ios:Page.UseSafeArea="true" 
+             ios:Page.UseSafeArea="true"
+             x:Name="DLP"
              x:Class="WLED.Views.DeviceListPage">
     <Shell.TitleView>
         <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
@@ -57,7 +58,7 @@
                                            Grid.Row="1" Grid.Column="0" />
                                     <Button Text="&#xf011;" Grid.Row="0" Grid.Column="2" Margin="0,0,0,25"
                                             Clicked="OnPowerButtonTapped" VerticalOptions="CenterAndExpand" HorizontalOptions="Center"
-                                            Grid.RowSpan="3" TextColor="#515051"
+                                            Grid.RowSpan="3" TextColor="{Binding StateColor}"
                                             FontFamily="{StaticResource FontAwesomeSolid}"
                                             FontSize="30"/>
                                     <Button Text="&#xf1f8;" Grid.Row="1" Grid.Column="2" Margin="0,25,0,0"

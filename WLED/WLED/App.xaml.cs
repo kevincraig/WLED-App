@@ -32,12 +32,17 @@ namespace WLED
         {
             //Public ViewModel Instance
             DeviceViewModel = new DeviceViewModel();
-            Xamarin.Forms.Internals.Log.Listeners.Add(new DelegateLogListener((arg1, arg2) => Debug.WriteLine(arg2)));
             InitializeComponent();
 
             //listview = new DeviceListViewPage();
             //MainPage = listview;
             //MainPage.SetValue(NavigationPage.BarTextColorProperty, Color.White);
+
+            //Logs out Binding Errors
+            Xamarin.Forms.Internals.Log.Listeners.Add(
+                new Xamarin.Forms.Internals.DelegateLogListener((arg1, arg2) =>
+                    Debug.WriteLine($"[BINDING-ERRORS]" + arg2)));
+
 
             MainPage = new AppShell();
             Application.Current.MainPage.SetValue(NavigationPage.BarBackgroundColorProperty, "#0000AA");
@@ -56,6 +61,11 @@ namespace WLED
             if (Preferences.ContainsKey("wleddevices"))
             {
                 App.DeviceViewModel.GetCachedDevices?.Execute(null);
+            }
+
+            if (App.DeviceViewModel.DeviceList.Count != 0)
+            {
+                App.DeviceViewModel.RefreshAll();
             }
         }
 

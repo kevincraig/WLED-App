@@ -12,7 +12,7 @@ namespace WLED.ViewModels
 {
     public class DeviceViewModel : ViewModelBase
     {
-            
+        #region Properties    
         private ObservableCollection<WLEDDevice> _deviceList;
         public ObservableCollection<WLEDDevice> DeviceList
         {
@@ -27,14 +27,32 @@ namespace WLED.ViewModels
             set => SetPropertyValue(ref _deviceToCreate, value);
         }
 
+        //public Color ColorCurrent { get; set; }
+
+        //private bool _stateCurrent;
+        //public bool StateCurrent
+        //{
+        //    get => _stateCurrent;
+        //    set => SetPropertyValue(ref _stateCurrent, value);
+        //}
+
+        //public Color StateColor
+        //{
+        //    get => StateCurrent ? Color.FromHex("#4af2a1") : Color.FromHex("#515051");
+        //}
+        #endregion
+
+
+        #region Commands
         public ICommand CreateDevice => new Command((obj) => OnCreateDevice());
         public ICommand CacheDevices => new Command((obj) => OnCacheDevices());
         public ICommand DeleteDevice => new Command((obj) => OnDeleteDevice(obj));
         public ICommand GetCachedDevices => new Command((obj) => OnGetCachedDevices());
         public ICommand ResortDevices => new Command((obj) => OnResortDevices());
         public ICommand TogglePower => new Command((obj) => OnTogglePower(obj));
+        
+        #endregion
 
-       
 
         private void OnCreateDevice()
         {
@@ -76,7 +94,7 @@ namespace WLED.ViewModels
             {
                 ObservableCollection<WLEDDevice> fromPreferences = Serialization.Deserialize(devices);
                 if (fromPreferences != null) DeviceList = new ObservableCollection<WLEDDevice>(fromPreferences);
-                Console.WriteLine($"Device Count: {DeviceList.Count}");
+                Utils.Log($"Device Count: {DeviceList.Count}");
             }
             RefreshAll();
         }
@@ -102,6 +120,7 @@ namespace WLED.ViewModels
             DeviceList.Remove(d as WLEDDevice);
         }
 
+      
         public void RefreshAll()
         {
             foreach (WLEDDevice d in DeviceList) _ = d.Refresh();

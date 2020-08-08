@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Xamarin.Forms;
+using WLED.ViewModels;
 
 namespace WLED.Models
 {
@@ -10,12 +11,11 @@ namespace WLED.Models
 
     //Data Model. Represents a WLED light with a network address, name, and some current light values.
     [XmlType("dev")]
-    public class WLEDDevice : INotifyPropertyChanged, IComparable
+    public class WLEDDevice : ViewModelBase, IComparable
     {
         private string networkAddress = "192.168.4.1";                          //device IP (can also be hostname if applicable)
         private string name = "";                                               //device display name ("Server Description")
         private DeviceStatus status = DeviceStatus.Default;                     //Current connection status
-        private bool stateCurrent = false;                                      //Is the light currently on?
         private bool isEnabled = true;                                          //Disabled devices don't get polled or show up in the list
         private double brightnessReceived = 0.9, brightnessCurrent = 0.9;       //There are two vars for brightness to discern API responses from slider updates
 
@@ -25,31 +25,30 @@ namespace WLED.Models
             set
             {
                 if (value == null || value.Length < 3) return; //More elaborate checking for URL syntax could be added here
-                networkAddress = value;
+                SetPropertyValue(ref networkAddress, value);
+
             }
-            get { return networkAddress; }
+            get => networkAddress;
         }
 
         [XmlElement("name")]
         public string Name
-        { 
+        {
             set
             {
                 if (value == null || name.Equals(value)) return; //Make sure name is not set to null
-                name = value;
-                OnPropertyChanged("Name");
+                SetPropertyValue(ref name, value);
             }
-            get { return name; }
+                
+            
+            get => name;
         }
 
         internal DeviceStatus CurrentStatus
         {
-            set
-            {
-                status = value;
-                OnPropertyChanged("Status");
-            }
-            get { return status; }
+            set => SetPropertyValue(ref status, value);
+
+            get => status;
         }
 
         [XmlElement("ncustom")]
@@ -60,13 +59,13 @@ namespace WLED.Models
         {
             set
             {
-                isEnabled = value;
-                OnPropertyChanged("Status");
-                OnPropertyChanged("ListHeight");
-                OnPropertyChanged("TextColor");
-                OnPropertyChanged("IsEnabled");
+                SetPropertyValue(ref isEnabled, value);
+                RaisePropertyChanged("Status");
+                RaisePropertyChanged("ListHeight");
+                RaisePropertyChanged("TextColor");
+                RaisePropertyChanged("IsEnabled");
             }
-            get { return isEnabled; }
+            get => isEnabled;
         }
 
         [XmlIgnore]
@@ -88,20 +87,23 @@ namespace WLED.Models
         public Color ColorCurrent { get; set; }
 
         [XmlIgnore]
+        private bool stateCurrent; //Is the light on?
         public bool StateCurrent
         {
-            get { return stateCurrent; }
-            set { OnPropertyChanged("StateColor"); stateCurrent = value; }
+            get => stateCurrent;
+            set
+            {
+                SetPropertyValue(ref stateCurrent, value);
+                RaisePropertyChanged("StateColor");
+            }
+                    
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
+            
 
         //helper properties for updating view dynamically via data binding
         [XmlIgnore]
-        public Color StateColor { get { return StateCurrent ? Color.FromHex("#666") : Color.FromHex("#222"); } } //button background color
+        public Color StateColor { get => StateCurrent ? Color.FromHex("#5294e2") : Color.FromHex("#222"); } //button background color
 
-        [XmlIgnore]
-        public string ListHeight { get { return isEnabled ? "-1" : "0"; } } //height of one view cell (set to 0 to hide device)
 
         [XmlIgnore]
         public string TextColor { get { return isEnabled ? "#FFF" : "#999"; } } //text color for modification page
@@ -179,11 +181,11 @@ namespace WLED.Models
             {
                 brightnessReceived = deviceResponse.Brightness;
                 BrightnessCurrent = brightnessReceived;
-                OnPropertyChanged("BrightnessCurrent"); //update slider binding
+                RaisePropertyChanged("BrightnessCurrent"); //update slider binding
             }
 
             ColorCurrent = deviceResponse.LightColor;
-            OnPropertyChanged("ColorCurrent");
+            //OnPropertyChanged("ColorCurrent");
 
             StateCurrent = deviceResponse.IsOn;
             return true;
@@ -204,9 +206,9 @@ namespace WLED.Models
             return (networkAddress.CompareTo(c.networkAddress));
         }
 
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        //protected virtual void OnPropertyChanged(string propertyName)
+        //{
+        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        //}
     }
 }
