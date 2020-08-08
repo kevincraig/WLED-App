@@ -27,19 +27,13 @@ namespace WLED.ViewModels
             set => SetPropertyValue(ref _deviceToCreate, value);
         }
 
-        //public Color ColorCurrent { get; set; }
+        private WLEDDevice _currentDevice;
+        public WLEDDevice CurrentDevice
+        {
+            get => _currentDevice;
+            set => SetPropertyValue(ref _currentDevice, value);
+        }
 
-        //private bool _stateCurrent;
-        //public bool StateCurrent
-        //{
-        //    get => _stateCurrent;
-        //    set => SetPropertyValue(ref _stateCurrent, value);
-        //}
-
-        //public Color StateColor
-        //{
-        //    get => StateCurrent ? Color.FromHex("#4af2a1") : Color.FromHex("#515051");
-        //}
         #endregion
 
 

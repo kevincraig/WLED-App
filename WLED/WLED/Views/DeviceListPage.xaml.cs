@@ -72,8 +72,20 @@ namespace WLED.Views
             {
                 DisplayAlert($"{d.Name}", "We were unable to toggle power, please try again later.", "OK");
             }
+        }
 
-            
+        void OnShowColorView(object sender, EventArgs e)
+        {
+
+            Button s = sender as Button;
+            WLEDDevice d = new WLEDDevice();
+            if (s.Parent.BindingContext is WLEDDevice targetDevice)
+            {
+                ColorPickerView.IsVisible = true;
+                d = targetDevice;
+                viewModel.CurrentDevice = d;
+            }
+
         }
     }
 }

@@ -84,7 +84,12 @@ namespace WLED.Models
         }
 
         [XmlIgnore]
-        public Color ColorCurrent { get; set; }
+        private Color _colorCurrent;
+        public Color ColorCurrent
+        {
+            get => _colorCurrent;
+            set => SetPropertyValue(ref _colorCurrent, value);
+        }
 
         [XmlIgnore]
         private bool stateCurrent; //Is the light on?
@@ -185,7 +190,7 @@ namespace WLED.Models
             }
 
             ColorCurrent = deviceResponse.LightColor;
-            //OnPropertyChanged("ColorCurrent");
+            
 
             StateCurrent = deviceResponse.IsOn;
             return true;

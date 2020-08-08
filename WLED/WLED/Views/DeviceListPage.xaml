@@ -6,6 +6,7 @@
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
              xmlns:viewModels="clr-namespace:WLED.ViewModels"
              xmlns:local="clr-namespace:WLED"
+             xmlns:views="clr-namespace:WLED.Views"
              ios:Page.UseSafeArea="true"
              x:Name="DLP"
              x:Class="WLED.Views.DeviceListPage">
@@ -18,65 +19,104 @@
         <viewModels:DeviceViewModel/>
     </ContentPage.BindingContext>
     <ContentPage.Content>
-        <StackLayout Spacing="0">
-            <StackLayout Orientation="Horizontal" Padding="0" Margin="0">
-                <Label Text="Device List" FontSize="30" FontFamily="{StaticResource BebasNeue}"
-                       HorizontalOptions="Center" TextColor="White" Margin="25" Padding="0"/>
-                <Button Text="plus" TextColor="#4af2a1" FontFamily="{StaticResource FontAwesomeSolid}"
-                        Clicked="OnAddButtonTapped" FontSize="30" HorizontalOptions="EndAndExpand" Margin="0,0,15,0" Padding="0"/>
+        <AbsoluteLayout  Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <StackLayout Spacing="0">
+                <StackLayout Orientation="Horizontal" Padding="0" Margin="0">
+                    <Label Text="Device List" FontSize="30" FontFamily="{StaticResource BebasNeue}"
+                           HorizontalOptions="Center" TextColor="White" Margin="25" Padding="0"/>
+                    <Button Text="plus" TextColor="#4af2a1" FontFamily="{StaticResource FontAwesomeSolid}"
+                            Clicked="OnAddButtonTapped" FontSize="30" HorizontalOptions="EndAndExpand" Margin="0,0,15,0" Padding="0"/>
+                </StackLayout>
+                <!--<BoxView Color="LightGray" Margin="15,0,15,0" HorizontalOptions="FillAndExpand" HeightRequest="1"></BoxView>-->
+                <ListView x:Name="DeviceListView"
+                        ItemsSource="{Binding DeviceList}"
+                        IsPullToRefreshEnabled="True"
+                        HasUnevenRows="True"
+                        BackgroundColor="#EEE"
+                        SeparatorColor="Transparent"
+                        CachingStrategy="RecycleElement">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Frame Margin="15" Padding="15,10,0,15" CornerRadius="10">
+                                   <!--<StackLayout BackgroundColor="#222222" IsVisible="{Binding IsEnabled}" HeightRequest="{Binding ListHeight}">-->
+                                    <Grid BackgroundColor="#FFF"  >
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="35" />
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="65" />
+                                            <ColumnDefinition Width="65" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Text="{Binding Name}" 
+                                               Font="Bold, 25" TextColor="#5294e2"
+                                               Grid.Row="0" Grid.Column="0" />
+                                        <Label Text="{Binding Status}" 
+                                               Font="18" TextColor="#555"
+                                               Grid.Row="1" Grid.Column="0" />
+                                       
+                                        <!--Action Buttons-->
+                                        <Grid Grid.Row="3">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="35"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="45"/>
+                                                <ColumnDefinition Width="45"/>
+                                                <ColumnDefinition Width="45"/>
+                                                <ColumnDefinition Width="45"/>
+                                                <ColumnDefinition Width="45"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Button Text="&#xf53f;"
+                                                FontFamily="{StaticResource FontAwesomeSolid}"
+                                                FontSize="30"
+                                                TextColor="{Binding ColorCurrent}"
+                                                Grid.Row="0" Grid.Column="0"
+                                                HorizontalOptions="StartAndExpand"
+                                                IsEnabled="{Binding StateCurrent}"
+                                                Clicked="OnShowColorView"/>
+                                            <Button Text="&#xf017;"
+                                                FontFamily="{StaticResource FontAwesomeSolid}"
+                                                FontSize="30"
+                                                TextColor="#515051"
+                                                Grid.Row="0" Grid.Column="1"
+                                                HorizontalOptions="StartAndExpand"
+                                                IsEnabled="{Binding StateCurrent}"
+                                                Clicked="OnShowColorView"/>
+                                             <Button Text="&#xf011;"
+                                                FontFamily="{StaticResource FontAwesomeSolid}"
+                                                FontSize="30"
+                                                TextColor="{Binding StateColor}"
+                                                Grid.Row="0" Grid.Column="2"
+                                                HorizontalOptions="StartAndExpand"
+                                                IsEnabled="{Binding StateCurrent}"
+                                                Clicked="OnPowerButtonTapped"/>
+                                            <Button Text="&#xf1f8;"
+                                                FontFamily="{StaticResource FontAwesomeSolid}"
+                                                FontSize="30"
+                                                TextColor="#515051"
+                                                Grid.Row="0" Grid.Column="3"
+                                                HorizontalOptions="StartAndExpand"
+                                                Clicked="OnDeleteButtonTapped"/>    
+                                        </Grid>
+
+                                        
+                                        <!--<Slider Maximum="255.1" Minimum="0.9" Value="{Binding BrightnessCurrent, Mode=TwoWay}" 
+                                                MinimumTrackColor="{Binding ColorCurrent}" MaximumTrackColor="#333" ThumbColor="White" 
+                                                Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" />-->
+                                    </Grid>
+                                   <!-- </StackLayout> -->
+                                </Frame>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </StackLayout>
-            <!--<BoxView Color="LightGray" Margin="15,0,15,0" HorizontalOptions="FillAndExpand" HeightRequest="1"></BoxView>-->
-            <ListView x:Name="DeviceListView"
-                    ItemsSource="{Binding DeviceList}"
-                    IsPullToRefreshEnabled="True"
-                    HasUnevenRows="True"
-                    BackgroundColor="#EEE"
-                    SeparatorColor="Transparent"
-                    CachingStrategy="RecycleElement">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <Frame Margin="15" Padding="15,10,0,15" CornerRadius="10">
-                               <!--<StackLayout BackgroundColor="#222222" IsVisible="{Binding IsEnabled}" HeightRequest="{Binding ListHeight}">-->
-                                <Grid BackgroundColor="#FFF"  >
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="35" />
-                                        <RowDefinition Height="25" />
-                                        <RowDefinition Height="25" />
-                                        <RowDefinition Height="35" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="65" />
-                                        <ColumnDefinition Width="65" />
-                                    </Grid.ColumnDefinitions>
-                                    <Label Text="{Binding Name}" 
-                                           Font="Bold, 25" TextColor="#5294e2"
-                                           Grid.Row="0" Grid.Column="0" />
-                                    <Label Text="{Binding Status}" 
-                                           Font="18" TextColor="#555"
-                                           Grid.Row="1" Grid.Column="0" />
-                                    <Button Text="&#xf011;" Grid.Row="0" Grid.Column="2" Margin="0,0,0,25"
-                                            Clicked="OnPowerButtonTapped" VerticalOptions="CenterAndExpand" HorizontalOptions="Center"
-                                            Grid.RowSpan="3" TextColor="{Binding StateColor}"
-                                            FontFamily="{StaticResource FontAwesomeSolid}"
-                                            FontSize="30"/>
-                                    <Button Text="&#xf1f8;" Grid.Row="1" Grid.Column="2" Margin="0,25,0,0"
-                                            Clicked="OnDeleteButtonTapped" VerticalOptions="CenterAndExpand" HorizontalOptions="Center"
-                                            Grid.RowSpan="3" TextColor="#515051"
-                                            FontFamily="{StaticResource FontAwesomeSolid}"
-                                            FontSize="30"/>
-                                  
-                                    <!--<Slider Maximum="255.1" Minimum="0.9" Value="{Binding BrightnessCurrent, Mode=TwoWay}" 
-                                            MinimumTrackColor="{Binding ColorCurrent}" MaximumTrackColor="#333" ThumbColor="White" 
-                                            Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" />-->
-                                </Grid>
-                               <!-- </StackLayout> -->
-                            </Frame>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </StackLayout>
+            <views:ColorPicker x:Name="ColorPickerView"/>
+        </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>
