@@ -43,13 +43,10 @@ namespace WLED
                 new Xamarin.Forms.Internals.DelegateLogListener((arg1, arg2) =>
                     Debug.WriteLine($"[BINDING-ERRORS]" + arg2)));
 
-
             MainPage = new AppShell();
             Application.Current.MainPage.SetValue(NavigationPage.BarBackgroundColorProperty, "#0000AA");
 
             Connectivity.ConnectivityChanged += OnConnectivityChanged;
-
-          
         }
 
         protected override void OnStart()
@@ -61,6 +58,7 @@ namespace WLED
             if (Preferences.ContainsKey("wleddevices"))
             {
                 App.DeviceViewModel.GetCachedDevices?.Execute(null);
+                
             }
 
             if (App.DeviceViewModel.DeviceList.Count != 0)

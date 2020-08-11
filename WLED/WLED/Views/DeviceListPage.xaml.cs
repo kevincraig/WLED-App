@@ -30,11 +30,10 @@ namespace WLED.Views
 
             if (!(e.Item is WLEDDevice targetDevice)) return;
 
-            string url = "http://" + targetDevice.NetworkAddress;
+            string url = targetDevice.NetworkAddress;
 
             //Open web UI control page
-            var page = new DeviceControlPage(url, targetDevice);
-            await Navigation.PushModalAsync(page, false);
+            await Shell.Current.GoToAsync($"embeddedControl?pageUrl={url}");
         }
 
         async void OnAddButtonTapped(object sender, EventArgs e)
@@ -85,7 +84,19 @@ namespace WLED.Views
                 d = targetDevice;
                 viewModel.CurrentDevice = d;
             }
-
         }
+
+        async void OnToggleNightLight(object sender, EventArgs e)
+        {
+            Button s = sender as Button;
+            WLEDDevice d = new WLEDDevice();
+            if (s.Parent.BindingContext is WLEDDevice targetDevice)
+            {
+                d = targetDevice;
+                viewModel.CurrentDevice = d;
+            }
+            
+        }
+
     }
 }

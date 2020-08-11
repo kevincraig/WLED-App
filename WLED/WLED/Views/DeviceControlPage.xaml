@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:wled="clr-namespace:WLED"
-             x:Class="WLED.DeviceControlPage"
+             x:Class="WLED.Views.DeviceControlPage"
              BackgroundColor="#222"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
              ios:Page.UseSafeArea="true"
@@ -10,11 +10,10 @@
 
     <ContentPage.Content>
         <StackLayout>
-            
-
+            <ActivityIndicator x:Name="activityIndicator" Color="White" />
             <Label x:Name="loadingLabel" Text="Loading..." Font="18" TextColor="white" HorizontalOptions="CenterAndExpand" />
+            <WebView IsVisible="false" x:Name="UIBrowser" WidthRequest="2000" HeightRequest="2000"/>
 
-            <WebView x:Name="UIBrowser" WidthRequest="2000" HeightRequest="2000"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

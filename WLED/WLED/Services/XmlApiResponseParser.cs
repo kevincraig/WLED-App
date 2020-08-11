@@ -30,6 +30,16 @@ namespace WLED
                     resp.IsOn = (bri > 0); //light is on if brightness > 0
                 }
 
+                string nightLightValue = xe.Element("nd")?.Value;
+                if (!string.IsNullOrEmpty(nightLightValue))
+                {
+                    int minutes = 0;
+                    Int32.TryParse(nightLightValue, out minutes);
+                    resp.NightLightTime = minutes;
+                    resp.NightLightOn = (minutes > 0);
+                }
+
+
                 double r = 0, g = 0, b = 0;
                 int counter = 0;
                 foreach (var el in xe.Elements("cl"))

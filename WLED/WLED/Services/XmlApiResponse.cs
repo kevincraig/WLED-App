@@ -12,5 +12,7 @@ namespace WLED
         public bool IsOn { get; set; } = false;
         public Color LightColor { get; set; }
         public string Name { get; set; } = "";
+        public int NightLightTime { get; set; }
+        public bool NightLightOn { get; set; }
     }
 }

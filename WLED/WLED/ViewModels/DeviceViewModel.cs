@@ -34,6 +34,15 @@ namespace WLED.ViewModels
             set => SetPropertyValue(ref _currentDevice, value);
         }
 
+        public Color ActiveColor
+        {
+            get => Color.FromHex("#5294e2");
+        }
+
+        public Color InactiveColor
+        {
+            get => Color.FromHex("#515051");
+        }
         #endregion
 
 
@@ -44,6 +53,7 @@ namespace WLED.ViewModels
         public ICommand GetCachedDevices => new Command((obj) => OnGetCachedDevices());
         public ICommand ResortDevices => new Command((obj) => OnResortDevices());
         public ICommand TogglePower => new Command((obj) => OnTogglePower(obj));
+        public ICommand ToggleNightLight => new Command((obj) => OnToggleNightLight(obj));
         
         #endregion
 
@@ -105,6 +115,27 @@ namespace WLED.ViewModels
         {
             WLEDDevice device = d as WLEDDevice;            
             await device.SendAPICall("T=2");
+        }
+
+        private async void OnToggleNightLight(object d)
+        {
+            WLEDDevice device = d as WLEDDevice;
+
+            if (device.NightLightOn)
+            {
+                await device.SendAPICall("&NL=0");
+                device.NightLightIconColor = InactiveColor;
+                Utils.Log("Night Light Off");
+            }
+            else
+            {
+                bool success = await device.SendAPICall("&NL=30");
+                if (success)
+                {
+                    device.NightLightIconColor = ActiveColor;
+                    await App.Current.MainPage.DisplayAlert("Night Light", $"Night light active, your light will turn off after {device.NightLightTime} minutes", "OK");
+                }
+            }
         }
 
 

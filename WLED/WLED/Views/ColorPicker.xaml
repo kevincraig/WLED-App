@@ -2,11 +2,11 @@
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:cpicker="clr-namespace:Udara.Plugin.XFColorPickerControl;assembly=Udara.Plugin.XFColorPickerControl"
-			 BackgroundColor="#51505150"
+			 BackgroundColor="#51505150" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
 			 Padding="10, 0" IsVisible="false" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" AbsoluteLayout.LayoutFlags="All"
              x:Class="WLED.Views.ColorPicker">
     <ContentView.Content>
-		<Frame HorizontalOptions="FillAndExpand" VerticalOptions="Center" Margin="10,0,10,0">
+		<Frame HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Margin="10,0,10,0">
 			<StackLayout>
 				<cpicker:ColorPicker
 					ColorFlowDirection="Horizontal"
@@ -18,19 +18,18 @@
 					PointerRingPositionYUnits="0.6"
 					PickedColorChanged="ColorPicker_PickedColorChanged">
 				</cpicker:ColorPicker>
-				<StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" BackgroundColor="Yellow">
+				<StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" >
 					<Button BackgroundColor="#5294e2"
 						TextColor="White"
 						FontFamily="{StaticResource Coolvetica}"
-						FontSize="24"
+						FontSize="24" HorizontalOptions="FillAndExpand" WidthRequest="80"
 						Text="Close" CornerRadius="5"
-						HorizontalOptions="CenterAndExpand"
 						Clicked="OnClose"/>
-					<Button BackgroundColor="#5294e2"
+					<Button BackgroundColor="#5294e2" 
 						TextColor="White"
+						Margin="15,0,15,0"
 						FontFamily="{StaticResource Coolvetica}"
-						FontSize="24"
-						HorizontalOptions="CenterAndExpand"
+						FontSize="24" HorizontalOptions="FillAndExpand" WidthRequest="80"
 						Text="Select" CornerRadius="5"
 						Clicked="OnSetColor"/>
 				</StackLayout>

@@ -68,6 +68,34 @@ namespace WLED.Models
             get => isEnabled;
         }
 
+
+        private bool _nightlightOn;
+        [XmlElement]
+        public bool NightLightOn
+        {
+            get => _nightlightOn; 
+            set => SetPropertyValue(ref _nightlightOn, value);
+        }
+
+        private string _nightLightTime;
+        [XmlElement]
+        public string NightLightTime
+        {
+            get => _nightLightTime;
+            set => SetPropertyValue(ref _nightLightTime, value);
+        }
+
+       
+
+        private Color _nightLightIconColor;
+        [XmlElement]
+        public Color NightLightIconColor
+        {
+            get => _nightLightIconColor;
+            set => SetPropertyValue(ref _nightLightIconColor, value);
+        }
+
+
         [XmlIgnore]
         public double BrightnessCurrent
         {
@@ -190,8 +218,8 @@ namespace WLED.Models
             }
 
             ColorCurrent = deviceResponse.LightColor;
-            
-
+            NightLightOn = deviceResponse.NightLightOn;
+            NightLightTime = deviceResponse.NightLightTime.ToString();
             StateCurrent = deviceResponse.IsOn;
             return true;
         }

@@ -30,6 +30,7 @@
                 <!--<BoxView Color="LightGray" Margin="15,0,15,0" HorizontalOptions="FillAndExpand" HeightRequest="1"></BoxView>-->
                 <ListView x:Name="DeviceListView"
                         ItemsSource="{Binding DeviceList}"
+                        ItemTapped="Handle_DeviceTapped"
                         IsPullToRefreshEnabled="True"
                         HasUnevenRows="True"
                         BackgroundColor="#EEE"
@@ -86,12 +87,21 @@
                                                 Grid.Row="0" Grid.Column="1"
                                                 HorizontalOptions="StartAndExpand"
                                                 IsEnabled="{Binding StateCurrent}"
-                                                Clicked="OnShowColorView"/>
-                                             <Button Text="&#xf011;"
+                                                Command="{Binding BindingContext.ToggleNightLight, Source={x:Reference DLP}}"
+                                                CommandParameter="{Binding .}"/>
+                                            <Button Text="&#xf021;"
+                                                FontFamily="{StaticResource FontAwesomeSolid}"
+                                                FontSize="30"
+                                                TextColor="#515051"
+                                                Grid.Row="0" Grid.Column="2"
+                                                HorizontalOptions="StartAndExpand"
+                                                IsEnabled="{Binding StateCurrent}"
+                                                Clicked="OnPowerButtonTapped"/>
+                                            <Button Text="&#xf011;"
                                                 FontFamily="{StaticResource FontAwesomeSolid}"
                                                 FontSize="30"
                                                 TextColor="{Binding StateColor}"
-                                                Grid.Row="0" Grid.Column="2"
+                                                Grid.Row="0" Grid.Column="3"
                                                 HorizontalOptions="StartAndExpand"
                                                 IsEnabled="{Binding StateCurrent}"
                                                 Clicked="OnPowerButtonTapped"/>
@@ -99,9 +109,10 @@
                                                 FontFamily="{StaticResource FontAwesomeSolid}"
                                                 FontSize="30"
                                                 TextColor="#515051"
-                                                Grid.Row="0" Grid.Column="3"
+                                                Grid.Row="0" Grid.Column="4"
                                                 HorizontalOptions="StartAndExpand"
-                                                Clicked="OnDeleteButtonTapped"/>    
+                                                Clicked="OnDeleteButtonTapped"/>
+                                             
                                         </Grid>
 
                                         
